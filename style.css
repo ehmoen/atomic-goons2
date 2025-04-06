@@ -1,0 +1,26 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#gameCanvas {
+    border: 5px solid black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000000;
+    background-image: url('./sprites/background01.png');
+    object-fit: fill;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#goon,
+#evilGoon,
+#atomicHero,
+#ship
+{
+    display: none;
+}
