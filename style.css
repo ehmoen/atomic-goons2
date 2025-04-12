@@ -5,16 +5,17 @@
 }
 
 #gameCanvas {
-    border: 5px solid black;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    translate: -50% -50%;
     background-color: #000000;
     background-image: url('./sprites/background01.png');
-    object-fit: fill;
-    max-width: 100%;
-    max-height: 100%;
+    background-size: cover;
+    background-position: center;
+    /*object-fit: fill;*/
+    /*max-width: 100%;*/
+    /*max-height: 100%;*/
 }
 
 #goon,
@@ -23,4 +24,42 @@
 #ship
 {
     display: none;
+}
+
+.controls {
+    position: absolute;
+    border: 5px solid #ffffff;
+    left: 5px;
+    bottom: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.controls > button {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-size: 30px;
+    border: 1px solid #ffffff;
+    margin: 5px;
+    box-shadow: 1px 1px 1px #000000;
+    text-shadow: 1px 1px 1px #000000;
+    transition: 0.3s;
+}
+
+.controls > button:hover,
+.controls > button:focus,
+.controls > button:active {
+    background-color: #7a2c8a;
+    box-shadow: 4px 4px 4px #000000;
+    text-shadow: 2px 2px 2px #000000;
+}
+
+@media screen and (max-width: 900px) {
+    #gameCanvas {
+        background-image: url('./sprites/background01.png');
+        background-size: cover;
+        background-position: center;
+    }
 }
