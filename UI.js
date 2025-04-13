@@ -1,4 +1,6 @@
-﻿export class UI {
+﻿import {gameScene} from "./Game.js";
+
+export class UI {
     constructor(game) {
         this.game = game;
         this.fontSize = 25;
@@ -20,7 +22,8 @@
 
         // number of goons
         const numOfGoons = this.game.enemies.length;
-        context.fillText("Goons: #" + numOfGoons, 150, 20);
+        //context.fillText("Goons: #" + numOfGoons, 150, 20);
+        context.fillText( this.game.currentGameScene, 150, 20);
 
         // timer
         const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
@@ -33,7 +36,7 @@
         }
 
         // game over message
-        if (this.game.gameOver) {
+        if (this.game.currentGameScene === gameScene.GAME_OVER) {
 
             let message1;
             let message2;

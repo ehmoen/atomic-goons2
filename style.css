@@ -26,17 +26,20 @@
     display: none;
 }
 
+/* This is for mobile - TODO: Make another layout for full screen */
 .controls {
     position: absolute;
-    border: 5px solid #ffffff;
-    left: 5px;
-    bottom: 5px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 5px solid #ffffff;
+    bottom: 5px;
+    width: calc(100% - 20px);
+    margin: 10px;
 }
 
 .controls > button {
-    width: 50px;
+    width: 100px;
     height: 50px;
     background-color: transparent;
     color: #FFFFFF;
@@ -56,10 +59,26 @@
     text-shadow: 2px 2px 2px #000000;
 }
 
-@media screen and (max-width: 900px) {
-    #gameCanvas {
-        background-image: url('./sprites/background01.png');
-        background-size: cover;
-        background-position: center;
-    }
+.hidden {
+    display: none;
 }
+
+.show {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 5px solid #ffffff;
+    bottom: 100px;
+    height:50%;
+    width: calc(100% - 20px);
+    margin: 10px;
+}
+
+/*@media screen and (max-width: 900px) {*/
+/*    #gameCanvas {*/
+/*        background-image: url('./sprites/background01.png');*/
+/*        background-size: cover;*/
+/*        background-position: center;*/
+/*    }*/
+/*}*/

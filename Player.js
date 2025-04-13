@@ -2,7 +2,7 @@
 import {Vector2D} from "./engine/Vector2D.js";
 import {Projectile} from "./Projectile.js";
 
-export     class Player extends Particle {
+export class Player extends Particle {
     constructor(game) {
         super(100, 100, 0, 0, 0, 0.99);//x, y, speed, direction, gravity = 0
         this.game = game;
@@ -30,8 +30,7 @@ export     class Player extends Particle {
         }
 
         this.thrust.setAngle(this.angle);
-
-        if(this.thrusting) {
+         if(this.thrusting) {
             this.thrust.setLength(0.05);
         }
         else {
@@ -46,19 +45,12 @@ export     class Player extends Particle {
         });
 
         this.photonTorpedos = this.photonTorpedos.filter((pt) => !pt.markedForDeletion);
-
-        // TODO: sprite animation
-        // if (this.frameX < this.maxFrame) {
-        //     this.frameX++;
-        // } else {
-        //     this.frameX = 0;
-        // }
     }
 
     draw(context) {
         if (this.game.debug) {
             context.strokeRect(this.x, this.y, this.width, this.height);
-        }
+        }   
 
         context.save();
         context.translate(this.position.x, this.position.y);

@@ -1,7 +1,5 @@
 ﻿import {Game} from "./Game.js";
 
-
-
 window.addEventListener("load", () => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -9,9 +7,7 @@ window.addEventListener("load", () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-
-
-    const game = new Game(canvas.width, canvas.height);
+    const game = new Game(canvas);
     let lastTime = 0;
 
     function run(timeStamp) {
@@ -22,6 +18,6 @@ window.addEventListener("load", () => {
         game.draw(ctx);
         requestAnimationFrame(run);
     }
-
+    
     run(0);
 });
