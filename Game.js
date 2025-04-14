@@ -89,26 +89,38 @@ export class Game {
 
         this.thrustButton = document.getElementById('thrustButton');
         this.thrustButton.addEventListener('touchstart', e => {
+            e.preventDefault();
             this.keys.push("ArrowUp");
         });
         this.thrustButton.addEventListener('touchend', e => {
+            e.preventDefault();
             this.keys.splice(this.keys.indexOf("ArrowUp"), 1);
         });
 
         this.leftButton = document.getElementById('leftButton');
         this.leftButton.addEventListener('touchstart', e => {
+            e.preventDefault();
             this.keys.push("ArrowLeft");
         });
         this.leftButton.addEventListener('touchend', e => {
+            e.preventDefault();
             this.keys.splice(this.keys.indexOf("ArrowLeft"), 1);
         });
 
         this.rightButton = document.getElementById('rightButton');
         this.rightButton.addEventListener('touchstart', e => {
+            e.preventDefault();
             this.keys.push("ArrowRight");
         });
         this.rightButton.addEventListener('touchend', e => {
+            e.preventDefault();
             this.keys.splice(this.keys.indexOf("ArrowRight"), 1);
+        });
+
+        this.fireButton = document.getElementById('fireButton');
+        this.fireButton.addEventListener('touchstart', e => {
+            e.preventDefault();
+            this.start();
         });
         
     }
