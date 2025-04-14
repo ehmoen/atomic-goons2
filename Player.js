@@ -4,7 +4,7 @@ import {Projectile} from "./Projectile.js";
 
 export class Player extends Particle {
     constructor(game) {
-        super(100, 100, 0, 0, 0, 0.99);//x, y, speed, direction, gravity = 0
+        super(400, 40, 0, 0, 0, 0.99);//x, y, speed, direction, gravity = 0
         this.game = game;
         this.width = 30;
         this.height = 30;
@@ -28,6 +28,27 @@ export class Player extends Particle {
         } else {
             this.thrusting = false;
         }
+
+        
+        // // Mouse and touch controls
+        // if (this.game.mouse.x > this.game.width / 2) {
+        //     this.angle -= 0.03;
+        //
+        // } else if (this.game.mouse.x < this.game.width / 2) {
+        //     this.angle += 0.03;
+        //
+        // } 
+        //
+        // if (this.game.mouse.y > 800) {
+        //
+        //     this.thrusting = true;
+        // } else {
+        //     this.thrusting = false;
+        // }
+        
+        
+        
+        
 
         this.thrust.setAngle(this.angle);
          if(this.thrusting) {

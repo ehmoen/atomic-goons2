@@ -5,152 +5,146 @@ import {Player} from "./Player.js";
 import {AtomicGoon} from "./AtomicGoon.js";
 import {AudioControl} from "./AudioControl.js";
 
-// const LOADING = 0;
-// const PLAYING = 1;
-// const GAME_OVER = 2;
-// const LEGENDS = 3;
-// const PAUSE = 4;
-export const gameScene = {
-    LOADING: 'loading',
-    PLAYING: 'playing',
-    PAUSE: 'pause',
-    GAME_OVER: 'gameOver'
-};
-
 export class Game {
-    constructor(canvas) {
+    constructor(canvas, ctx) {
         this.canvas = canvas;
+        this.ctx = ctx;
         this.width = canvas.width;
         this.height = canvas.height;
+        
         this.background = new StarField(this);
         this.player = new Player(this);
+        
         this.input = new InputHandler(this);
         this.keys = [];
+        this.mouse = {
+            x: undefined,
+            y: undefined,
+            width: 1,
+            height: 1,
+            pressed: false,
+            fired: false
+        };
+        
+        this.soundOn = false;
         this.sound = new AudioControl();
         this.ui = new UI(this);
-        this.mouse = {x: undefined, y: undefined, pressed: false};
+        
         this.enemies = [];
         this.enemyTimer = 0;
         this.enemyInterval = 1000;
+        
         this.ammo = 20;
         this.maxAmmo = 50;
         this.ammoTimer = 0;
         this.ammoInterval = 500;
-        //this.gameOver = false;
+
         this.score = 0;
         this.winningScore = 10;
         this.gameTime = 0;
-        this.timeLimit = 5000;
-        this.speed = 1;
-        this.debug = true;
+        this.timeLimit = 50000;
 
-        this.soundOn = false;
-        this.musicOn = false;
-        this.currentGameScene = gameScene.LOADING;
+        this.gameOver = true;
+
+        this.resize(window.innerWidth, window.innerHeight);
         
-        // GUI ------------------------------------------------
-        window.addEventListener("resize", (e) => {
-            this.resize(window.innerWidth, window.innerHeight);
+        /*===================================================
+         EventListeners
+        ===================================================*/
+        window.addEventListener('resize', e => {
+            this.resize(e.target.innerWidth, e.target.innerHeight);
         });
 
-        this.playButton = document.getElementById("playButton");
-        this.playButton.addEventListener("click", (e) => {
-            this.currentGameScene = gameScene.PLAYING;
+        window.addEventListener('mousedown', e => {
+            this.mouse.x = e.x;
+            this.mouse.y = e.y;
+            this.mouse.pressed = true;
+            this.mouse.fired = false;
+        });
+
+        window.addEventListener('mouseup', e => {
+            this.mouse.x = e.x;
+            this.mouse.y = e.y;
+            this.mouse.pressed = false;
+        });
+
+        window.addEventListener('touchstart', e => {
+            this.mouse.x = e.changedTouches[0].pageX;
+            this.mouse.y = e.changedTouches[0].pageY;
+            this.mouse.pressed = true;
+            this.mouse.fired = false;
+        });
+
+        window.addEventListener('touchend', e => {
+            this.mouse.x = e.changedTouches[0].pageX;
+            this.mouse.y = e.changedTouches[0].pageY;
+            this.mouse.pressed = false;
+        });
+
+        window.addEventListener('keyup', e => {
+            if (e.key === 'Enter'){
+                this.start();
+            } 
+        });
+
+        this.thrustButton = document.getElementById('thrustButton');
+        this.thrustButton.addEventListener('touchstart', e => {
+            this.keys.push("ArrowUp");
+        });
+        this.thrustButton.addEventListener('touchend', e => {
+            this.keys.splice(this.keys.indexOf("ArrowUp"), 1);
+        });
+
+        this.leftButton = document.getElementById('leftButton');
+        this.leftButton.addEventListener('touchstart', e => {
+            this.keys.push("ArrowLeft");
+        });
+        this.leftButton.addEventListener('touchend', e => {
+            this.keys.splice(this.keys.indexOf("ArrowLeft"), 1);
+        });
+
+        this.rightButton = document.getElementById('rightButton');
+        this.rightButton.addEventListener('touchstart', e => {
+            this.keys.push("ArrowRight");
+        });
+        this.rightButton.addEventListener('touchend', e => {
+            this.keys.splice(this.keys.indexOf("ArrowRight"), 1);
         });
         
-        this.pauseButton = document.getElementById("pauseButton");
-        this.pauseButton.addEventListener("click", (e) => {
-            console.log(this.currentGameScene)
-            if(this.currentGameScene === gameScene.PAUSE) {
-                this.currentGameScene = gameScene.PLAYING;
-            } else {
-                this.currentGameScene = gameScene.PAUSE;
-            }
-            console.log(this.currentGameScene)
-        });
-        
-        this.soundButton = document.getElementById("soundButton");
-        this.soundButton.addEventListener("click", (e) => {
-            this.soundOn = !this.soundOn;
-        });
-
-
-        // sounds ------------------------------------------------
-        // this.soundTrack = new Audio();
-        // this.goonsInAction = new Audio();
-        // this.goonsInAction.loop = true;
-        // this.goonsInAction.src = './sounds/song-goons-in-action.mp3';
-        //
-        // this.theme = new Audio();
-        // this.theme.loop = true;
-        // this.theme.src = './sounds/song-main-theme.mp3';
-        //
-        // this.shoot = new Audio();
-        // this.shoot.src = './sounds/fx-shoot-short.mp3';
-        //
-        // this.loose = new Audio();
-        // this.loose.src = './sounds/fx-loose.mp3';
     }
 
-    initGameScenePlaying() {
-        // this.enemyTimer = 0;
-        // this.ammo = 20;
-        // this.maxAmmo = 50;
-        // this.ammoTimer = 0;
-        // this.ammoInterval = 500;
-        //this.score = 0;
-        //this.winningScore = 10;
-        //this.gameTime = 0;
+    start(){
+        if(this.soundOn){
+            this.sound.songGoonsInAction.play();
+        }
+        
+        this.resize(window.innerWidth, window.innerHeight);
+        this.score = 0;
+        this.lives = 3;
+        this.gameTime = 0;
+        this.gameOver = false;
+        this.enemies = [];
+        this.enemies.forEach(enemy => {
+            enemy.markedForDeletion = false;
+        });
     }
-    
-    resize(width, height) {
+
+    resize(width, height){
         this.canvas.width = width;
         this.canvas.height = height;
         this.width = width;
         this.height = height;
     }
 
-    start() {
-        if (!this.gameOver) {
-            this.sound.songMainTheme.pause();
-            this.sound.songGoonsInAction.play();
-        } else {
-            this.sound.songGoonsInAction.pause();
-            this.sound.songMainTheme.play();
-        }
-    }
-
-    // pause() {
-    //     this.gameOver = true;
-    //     // this.theme.pause();
-    //     // this.goonsInAction.pause();
-    // }
-
     update(deltaTime) {
-        
-        switch (this.currentGameScene) {
-            case gameScene.LOADING:
-                break;
-            case gameScene.PLAYING:
-                this.initGameScenePlaying();
-                this.sound.songMainTheme.pause();
-                this.sound.songGoonsInAction.play();
-                break;
-            case gameScene.GAME_OVER:
-                this.sound.songGoonsInAction.pause();
-                this.sound.songMainTheme.play();
-                break;
-            case gameScene.PAUSE:
-                this.sound.songGoonsInAction.pause();
-                this.sound.songMainTheme.pause();
-                break;
-        }
 
-        if(this.currentGameScene === gameScene.PLAYING) {
+        if(!this.gameOver) {
             this.gameTime += deltaTime;
 
             if (this.gameTime > this.timeLimit) {
-                this.currentGameScene = gameScene.GAME_OVER;
+                this.gameOver = true;
+                this.sound.songGoonsInAction.pause();
+                this.sound.songGoonsInAction.currentTime = 0;
             }
 
             this.background.update();
@@ -187,7 +181,7 @@ export class Game {
                 this.enemyTimer += deltaTime;
             }
         } else {
-        console.log(this.currentGameScene);
+
         }
     }
     
@@ -219,5 +213,41 @@ export class Game {
                yPT < yGoon + atomicGoon.height / 2 &&
                xPT + photonTorpedo.width / 2 > xGoon &&
                yPT + photonTorpedo.height / 2 > yGoon;
+    }
+
+
+
+
+    triggerGameOver(){
+        if (!this.gameOver){
+            this.gameOver = true;
+            if (this.lives < 1){
+                this.message1 = 'Aargh!';
+                this.message2 = 'The crew was eaten!';
+            } else if (this.score >= this.winningScore){
+                this.message1 = 'Well done!';
+                this.message2 = 'You escaped the swarm!';
+            }
+        }
+    }
+    drawStatusText(){
+        this.ctx.save();
+        this.ctx.textAlign = 'left';
+        this.ctx.fillText('Score: ' + this.score, 20, 40);
+        for (let i = 0; i < this.lives; i++){
+            this.ctx.fillRect(20 + 15 * i, 60, 10, 25);
+        }
+        if (this.lives < 1 || this.score >= this.winningScore){
+            this.triggerGameOver();
+        }
+        if (this.gameOver){
+            this.ctx.textAlign = 'center';
+            this.ctx.font = '80px Bangers';
+            this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - 25);
+            this.ctx.font = '20px Bangers';
+            this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + 25);
+            this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + 50);
+        }
+        this.ctx.restore();
     }
 }

@@ -29,23 +29,41 @@
 /* This is for mobile - TODO: Make another layout for full screen */
 .controls {
     position: absolute;
+    top: calc(50% - 60px);
+    left: 10px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border: 5px solid #ffffff;
-    bottom: 5px;
-    width: calc(100% - 20px);
-    margin: 10px;
+    flex-direction: column;
 }
 
-.controls > button {
-    width: 100px;
-    height: 50px;
+.controls button {
     background-color: transparent;
     color: #FFFFFF;
     font-size: 30px;
     border: 1px solid #ffffff;
     margin: 5px;
+    padding: 0 10px;
+    box-shadow: 1px 1px 1px #000000;
+    text-shadow: 1px 1px 1px #000000;
+    transition: 0.3s;
+}
+
+.controls-right {
+    position: absolute;
+    top: calc(50% - 60px);
+    left: calc(100% - 115px);
+    display: flex;
+    flex-direction: column;
+}
+
+.controls-right button {
+    height: 85px;
+    width: 90px;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-size: 30px;
+    border: 1px solid #ffffff;
+    margin: 5px;
+    padding: 0 10px;
     box-shadow: 1px 1px 1px #000000;
     text-shadow: 1px 1px 1px #000000;
     transition: 0.3s;
@@ -75,10 +93,36 @@
     margin: 10px;
 }
 
-/*@media screen and (max-width: 900px) {*/
-/*    #gameCanvas {*/
-/*        background-image: url('./sprites/background01.png');*/
-/*        background-size: cover;*/
-/*        background-position: center;*/
-/*    }*/
-/*}*/
+
+#rotateOverlay {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+    padding-top: 40vh;
+}
+
+#installPrompt {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+}
+
+#installBtn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
