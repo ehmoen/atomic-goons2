@@ -2,9 +2,11 @@
     constructor(game) {
         this.game = game;
         window.addEventListener("keydown", (e) => {
-            if ((e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp") && this.game.keys.indexOf(e.key) === -1) {
+            if ((e.key === "ArrowLeft" || e.key === "a" || 
+                e.key === "ArrowRight" || e.key === "d" || 
+                e.key === "ArrowUp" || e.key === "w") && this.game.keys.indexOf(e.key) === -1) {
                 this.game.keys.push(e.key);
-            } else if (e.key === "p") {
+            } else if (e.key === "p" || e.key === " ") {
                 this.game.player.shootTop();
             } else if (e.key === "d") {
                 this.game.debug = !this.game.debug;

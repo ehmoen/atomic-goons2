@@ -26,7 +26,7 @@ export class Game {
             fired: false
         };
         
-        this.soundOn = false;
+        this.soundOn = true;
         this.sound = new AudioControl();
         this.ui = new UI(this);
         
@@ -34,10 +34,10 @@ export class Game {
         this.enemyTimer = 0;
         this.enemyInterval = 1000;
         
-        this.ammo = 20;
-        this.maxAmmo = 50;
+        this.ammo = 50;
+        this.maxAmmo = 100;
         this.ammoTimer = 0;
-        this.ammoInterval = 500;
+        this.ammoInterval = 250;
 
         this.score = 0;
         this.winningScore = 10;
@@ -45,6 +45,7 @@ export class Game {
         this.timeLimit = 50000;
 
         this.gameOver = true;
+        this.paused = false;
 
         this.resize(window.innerWidth, window.innerHeight);
         
@@ -54,85 +55,33 @@ export class Game {
         window.addEventListener('resize', e => {
             this.resize(e.target.innerWidth, e.target.innerHeight);
         });
-
-        window.addEventListener('mousedown', e => {
-            this.mouse.x = e.x;
-            this.mouse.y = e.y;
-            this.mouse.pressed = true;
-            this.mouse.fired = false;
-        });
-
-        window.addEventListener('mouseup', e => {
-            this.mouse.x = e.x;
-            this.mouse.y = e.y;
-            this.mouse.pressed = false;
-        });
-
-        window.addEventListener('touchstart', e => {
-            this.mouse.x = e.changedTouches[0].pageX;
-            this.mouse.y = e.changedTouches[0].pageY;
-            this.mouse.pressed = true;
-            this.mouse.fired = false;
-        });
-
-        window.addEventListener('touchend', e => {
-            this.mouse.x = e.changedTouches[0].pageX;
-            this.mouse.y = e.changedTouches[0].pageY;
-            this.mouse.pressed = false;
-        });
-
-        window.addEventListener('keyup', e => {
-            if (e.key === 'Enter'){
-                this.start();
-            } 
-        });
-
-        this.thrustButton = document.getElementById('thrustButton');
-        this.thrustButton.addEventListener('touchstart', e => {
-            e.preventDefault();
-            this.keys.push("ArrowUp");
-        });
-        this.thrustButton.addEventListener('touchend', e => {
-            e.preventDefault();
-            this.keys.splice(this.keys.indexOf("ArrowUp"), 1);
-        });
-
-        this.leftButton = document.getElementById('leftButton');
-        this.leftButton.addEventListener('touchstart', e => {
-            e.preventDefault();
-            this.keys.push("ArrowLeft");
-        });
-        this.leftButton.addEventListener('touchend', e => {
-            e.preventDefault();
-            this.keys.splice(this.keys.indexOf("ArrowLeft"), 1);
-        });
-
-        this.rightButton = document.getElementById('rightButton');
-        this.rightButton.addEventListener('touchstart', e => {
-            e.preventDefault();
-            this.keys.push("ArrowRight");
-        });
-        this.rightButton.addEventListener('touchend', e => {
-            e.preventDefault();
-            this.keys.splice(this.keys.indexOf("ArrowRight"), 1);
-        });
-
-        this.fireButton = document.getElementById('fireButton');
-        this.fireButton.addEventListener('touchstart', e => {
-            e.preventDefault();
-            this.start();
-        });
         
+        window.addEventListener('mousedown', e => {
+            //debugger
+            if(this.gameOver && !this.paused) {
+                this.start();
+            } else if (!this.paused) {
+                this.pause();
+            } else {
+                this.paused = false;
+                this.gameOver = false;
+                this.sound.songGoonsInAction.play();
+            }
+        });
     }
 
     start(){
         if(this.soundOn){
+            this.sound.songMainTheme.pause();
+            this.sound.songMainTheme.currentTime = 0;
             this.sound.songGoonsInAction.play();
         }
         
         this.resize(window.innerWidth, window.innerHeight);
+        this.ammo = 50;
         this.score = 0;
         this.lives = 3;
+        this.player = new Player(this);
         this.gameTime = 0;
         this.gameOver = false;
         this.enemies = [];
@@ -141,6 +90,13 @@ export class Game {
         });
     }
 
+    pause() {
+        this.sound.songGoonsInAction.pause();
+        this.sound.songMainTheme.pause();
+        this.gameOver = true;
+        this.paused = true;
+    }
+    
     resize(width, height){
         this.canvas.width = width;
         this.canvas.height = height;
@@ -157,6 +113,7 @@ export class Game {
                 this.gameOver = true;
                 this.sound.songGoonsInAction.pause();
                 this.sound.songGoonsInAction.currentTime = 0;
+                this.sound.songMainTheme.play();
             }
 
             this.background.update();
@@ -227,39 +184,36 @@ export class Game {
                yPT + photonTorpedo.height / 2 > yGoon;
     }
 
-
-
-
-    triggerGameOver(){
-        if (!this.gameOver){
-            this.gameOver = true;
-            if (this.lives < 1){
-                this.message1 = 'Aargh!';
-                this.message2 = 'The crew was eaten!';
-            } else if (this.score >= this.winningScore){
-                this.message1 = 'Well done!';
-                this.message2 = 'You escaped the swarm!';
-            }
-        }
-    }
-    drawStatusText(){
-        this.ctx.save();
-        this.ctx.textAlign = 'left';
-        this.ctx.fillText('Score: ' + this.score, 20, 40);
-        for (let i = 0; i < this.lives; i++){
-            this.ctx.fillRect(20 + 15 * i, 60, 10, 25);
-        }
-        if (this.lives < 1 || this.score >= this.winningScore){
-            this.triggerGameOver();
-        }
-        if (this.gameOver){
-            this.ctx.textAlign = 'center';
-            this.ctx.font = '80px Bangers';
-            this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - 25);
-            this.ctx.font = '20px Bangers';
-            this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + 25);
-            this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + 50);
-        }
-        this.ctx.restore();
-    }
+    // triggerGameOver(){
+    //     if (!this.gameOver){
+    //         this.gameOver = true;
+    //         if (this.lives < 1){
+    //             this.message1 = 'Game Over!';
+    //             this.message2 = 'xxxx!';
+    //         } else if (this.score >= this.winningScore){
+    //             this.message1 = 'Well done!';
+    //             this.message2 = 'You escaped the swarm!';
+    //         }
+    //     }
+    // }
+    // drawStatusText(){
+    //     this.ctx.save();
+    //     this.ctx.textAlign = 'left';
+    //     this.ctx.fillText('Score: ' + this.score, 20, 40);
+    //     for (let i = 0; i < this.lives; i++){
+    //         this.ctx.fillRect(20 + 15 * i, 60, 10, 25);
+    //     }
+    //     if (this.lives < 1 || this.score >= this.winningScore){
+    //         this.triggerGameOver();
+    //     }
+    //     if (this.gameOver){
+    //         this.ctx.textAlign = 'center';
+    //         this.ctx.font = '80px Bangers';
+    //         this.ctx.fillText(this.message1, this.width * 0.5, this.height * 0.5 - 25);
+    //         this.ctx.font = '20px Bangers';
+    //         this.ctx.fillText(this.message2, this.width * 0.5, this.height * 0.5 + 25);
+    //         this.ctx.fillText(this.message3, this.width * 0.5, this.height * 0.5 + 50);
+    //     }
+    //     this.ctx.restore();
+    // }
 }

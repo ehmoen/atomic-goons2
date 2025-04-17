@@ -36,13 +36,14 @@
         if (this.game.gameOver) {
             let message1;
             let message2;
-            if (this.game.score < this.game.winningScore) {
-                message1 = "You Win!";
-                message2 = "You rock!";
+            
+            if (this.game.score > this.game.winningScore) {
+                message1 = "Y O U  W I N !";
             } else {
                 message1 = "G A M E  O V E R";
-                message2 = "PRESS F5 TO PLAY AGAIN";
             }
+            
+            message2 = "CLICK TO PLAY AGAIN";
             context.fillStyle = this.color;
             context.textAlign = "center";
             context.font = "50px " + this.fontFamily;

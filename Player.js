@@ -19,36 +19,15 @@ export class Player extends Particle {
     }
 
     update() {
-        if (this.game.keys.includes("ArrowLeft")) {
+        if (this.game.keys.includes("ArrowLeft") || this.game.keys.includes("a")) {
             this.angle -= 0.03;
-        } else if (this.game.keys.includes("ArrowRight")) {
+        } else if (this.game.keys.includes("ArrowRight") || this.game.keys.includes("d")) {
             this.angle += 0.03;
-        } else if (this.game.keys.includes("ArrowUp")) {
+        } else if (this.game.keys.includes("ArrowUp") || this.game.keys.includes("w")) {
             this.thrusting = true;
         } else {
             this.thrusting = false;
         }
-
-        
-        // // Mouse and touch controls
-        // if (this.game.mouse.x > this.game.width / 2) {
-        //     this.angle -= 0.03;
-        //
-        // } else if (this.game.mouse.x < this.game.width / 2) {
-        //     this.angle += 0.03;
-        //
-        // } 
-        //
-        // if (this.game.mouse.y > 800) {
-        //
-        //     this.thrusting = true;
-        // } else {
-        //     this.thrusting = false;
-        // }
-        
-        
-        
-        
 
         this.thrust.setAngle(this.angle);
          if(this.thrusting) {
