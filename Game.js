@@ -42,7 +42,7 @@ export class Game {
         this.score = 0;
         this.winningScore = 10;
         this.gameTime = 0;
-        this.timeLimit = 50000;
+        this.timeLimit = 3000;
 
         this.gameOver = true;
         this.paused = false;

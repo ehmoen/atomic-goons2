@@ -5,17 +5,58 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atomic Goons II</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"/>
-    <script type="module" src="main.js"></script>
+    <script type="module" defer src="main.js"></script>
 </head>
 <body>
 
 <canvas id="gameCanvas"></canvas>
 
-<!-- sounds -->
-<audio id="fxExplosion" src="assets/sounds/fx-explosion.mp3" preload="auto"></audio>
-<audio id="songGoonsInAction" src="assets/sounds/song-goons-in-action.mp3" preload="auto"></audio>
-<audio id="songMainTheme" src="assets/sounds/song-main-theme.mp3" preload="auto"></audio>
+<div id="gameStart">
+    <div class="game-start-container">
+        <div class ="game-start-content">
+            <div class ="game-start-headings">
+                <div id="gameStartPlaying">
+                    <img src="./assets/sprites/atomic-hero.png" alt="Game Play" id="gameStartImage">
+                </div>
+            </div>
+            <p>
+                ATOMS HERE,THERE AND EVERYWHERE!<br>
+                FROM THE FAR END OF THE UNIVERSE <br>
+                TO THIS VERY PLACE AND BEYOND.<br>
+                EVERYTHING YOU SEE AND FEEL ARE ATOMS AT WORK.<br>
+                UNIVERSAL BUILDING BRICKS.<br>
+                CREATOR OF ALL LIFE AND THEREFORE ALL LOVE.<br>
+                <br>
+                FROM TIME TO TIME, GOONS WILL RISE FROM IT'S SHADOW <br> 
+                AND CREATE DISTURBANCE IN OUR UNIVERSE.<br>
+                THESE IMPOSTORS BLEND IN WITH OUR BEAUTIFUL ATOMS <br>
+                AND WE NEED TO TAKE THEM OUT.<br>
+                TIME IS CRITICAL.<br>
+                <br>
+                GOOD HUNTING!
+            </p>
+
+            <div>
+                <button id="startButton" type="button">Play Game</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="gameOver">
+    <img src="./assets/sprites/atomic-hero.png" alt="Game Over" id="gameOverImage">
+    <div style="display: flex; gap: 30px;">G A M E - O V E R</div>
+    <p>Your Score : <span id="finalScore"></span></p>
+    <div>
+    <button type="button" id="restartBtn">PLAY AGAIN</button>
+    <button type="button" id="quitBtn">QUIT</button>
+    </div>
+</div>
+
 
 </body>
 </html>

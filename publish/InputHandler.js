@@ -19,10 +19,10 @@
             }
         });
 
-        window.addEventListener("mousedown", (e) => {
-            this.game.mouse.x = e.x;
-            this.game.mouse.y = e.y;
-            //console.log(e);
-        })
+        // window.addEventListener("mousedown", (e) => {
+        //     this.game.mouse.x = e.x;
+        //     this.game.mouse.y = e.y;
+        //     //console.log(e);
+        // })
     }
 }

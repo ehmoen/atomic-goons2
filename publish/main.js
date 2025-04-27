@@ -1,23 +1,95 @@
 ﻿import {Game} from "./Game.js";
+import Timer from "./engine/Timer.js";
 
-window.addEventListener("load", () => {
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+export const GameState = {
+    START: 0,
+    LEVEL1: 1,
+    LEVEL2: 2,
+    GAME_OVER: 3
+};
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+let currentState = GameState.START;
 
-    const game = new Game(canvas, ctx);
-    let lastTime = 0;
+//
+// Game initialization
+//
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-    function gameLoop(timeStamp) {
-        const deltaTime = timeStamp - lastTime;
-        lastTime = timeStamp;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update(deltaTime);
-        game.draw(ctx);
-        requestAnimationFrame(gameLoop);
-    }
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-    requestAnimationFrame(gameLoop);
+const game = new Game(canvas, ctx);
+game.setState(currentState); // set initial state
+
+//
+// Keyboard handler for changing states (for DEBUG)
+//
+// window.addEventListener("keydown", (e) => {
+//     if (e.key === "Enter" && currentState === GameState.START) {
+//         currentState = GameState.LEVEL1;
+//         game.setState(currentState);
+//         console.log("Game started", currentState);
+//     } else if (e.key === "1") {
+//         currentState = GameState.LEVEL1;
+//         game.setState(currentState);
+//         console.log("1Level 1");
+//     } else if (e.key === "2") {
+//         currentState = GameState.LEVEL2;
+//         game.setState(currentState);
+//         console.log("Level 2");
+//     } else if (e.key === "g") {
+//         currentState = GameState.GAME_OVER;
+//         game.setState(currentState);
+//         console.log("Game Over");
+//     }
+// });
+
+//
+// Start game
+//
+const startButton = document.getElementById("startButton");
+startButton.addEventListener("click", () => {
+    document.getElementById('gameStart').style.display = "none";
+    playGame();
 });
+
+//
+// Play game
+//
+function playGame() {
+    game.reset();
+    currentState = GameState.LEVEL1;
+    game.setState(currentState);
+}
+
+// document.getElementById("playBtn").addEventListener("click", () => {
+//     document.getElementById('gameStart').style.display = "none";
+//     playGame();
+// });
+
+//
+// Restart game
+//
+document.getElementById("restartBtn").addEventListener("click", () => {
+    document.getElementById('gameOver').style.display = "none";
+    playGame();
+});
+
+document.getElementById("quitBtn").addEventListener("click", () => {
+    document.getElementById('gameOver').style.display = "none";
+    document.getElementById('gameStart').style.display = "flex";
+});
+
+
+//
+// Timer
+//
+const timer = new Timer(1 / 60);
+timer.update = function update(deltaTime) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    game.update(deltaTime);
+    game.draw(ctx);
+}
+
+timer.start();

@@ -7,8 +7,8 @@ export class Projectile extends Particle {
         this.x = x;
         this.y = y;
         this.angle = angle;
-        this.width = 4;
-        this.height = 4;
+        this.width = 6;
+        this.height = 6;
         this.speed = 10;
         this.markedForDeletion = false;
     }
@@ -23,7 +23,7 @@ export class Projectile extends Particle {
     }
 
     draw(context) {
-        context.fillStyle = "red";
+        context.fillStyle = "#f2b934";
         context.fillRect(this.position.x + Math.cos(this.angle), this.position.y + Math.sin(this.angle), this.width, this.height);
     }
 }

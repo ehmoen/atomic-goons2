@@ -11,7 +11,7 @@ export class AtomicGoon {
         // this.x = -this.game.width / 2 + rand(this.game.width - 1);
         // this.y = -this.game.height / 2 + rand(this.game.height - 1);
         // this.z = NEAR_Z + rand(FAR_Z - NEAR_Z - 1);
-        
+
         this.x = randomRange(-this.game.width / 2, this.game.width / 2);
         this.y = randomRange(-this.game.height / 2, this.game.height / 2);
         this.z = randomRange(NEAR_Z, FAR_Z); 
@@ -21,7 +21,7 @@ export class AtomicGoon {
         this.score = this.lives;
         this.frameX = 0;
         this.frameY = 0;
-        this.maxFrame = 20;
+        this.maxFrame = 19;
         this.width = 70;
         this.height = 70;
         this.img = document.createElement("img");

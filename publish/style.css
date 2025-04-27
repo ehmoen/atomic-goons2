@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+.press-start-2p-regular {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
 #gameCanvas {
     position: absolute;
     top: 50%;
@@ -14,3 +20,122 @@
     background-size: cover;
     background-position: center;
 }
+
+#ui {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    font-size: 1rem;
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #f2b934;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 20px;
+    font-family: inherit;
+    box-shadow: 0 0px 63px 0 rgba(225, 225, 225, 0.2), 0 0px 35px 0 rgba(225, 225, 225, 0.19);
+    border: 0px solid white;
+    color: #75251a;
+}
+
+#gameStart,
+#gameOver {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: #000000;
+    width: 100%;
+    height: 100%;
+    color: #2c974d;
+    /*font-family: Arial, serif;*/
+}
+
+#gameOver{
+    display: none;
+}
+
+#gameStart {
+    display: block;
+}
+
+body {
+    font-family: "Press Start 2P", Arial, sans-serif;
+    background-color: #000000;
+    color: #2c974d;
+    font-size: 1vw;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+.game-start-container {
+    margin: 0 auto;
+    perspective: 380px;
+    perspective-origin: bottom;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: visible;
+    transform: scaleY(0.9);
+}
+
+.game-start-headings {
+
+}
+
+#startButton{
+    font-size: 3rem;
+}
+
+p{
+    padding: 0.5rem 0;
+    text-align: center;
+    text-wrap: nowrap;
+}
+
+#gameStartPlaying {
+    display: block;
+    text-align: center;
+}
+
+.game-start-content {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 100%;
+    animation: play 30s normal;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+}
+
+@keyframes play {
+    0% {
+        transform: rotateX(20deg) translate3d(0, 500px, 0);
+        opacity: 1;
+    }
+    50% {
+        transform: rotateX(20deg) translate3d(0, 0px, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: rotateX(20deg) translate3d(0, -500px, 0);
+        opacity: 0;
+    }
+    
+}
+
+
+
+
