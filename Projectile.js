@@ -19,7 +19,7 @@ export class Projectile extends Particle {
 
         if (this.position.x > this.game.width) {
             this.markedForDeletion = true;
-        }
+        }        
     }
 
     draw(context) {

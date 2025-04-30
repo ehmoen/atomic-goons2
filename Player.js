@@ -10,8 +10,6 @@ export class Player extends Particle {
         this.height = 30;
         this.angle = 0;
         this.thrust = new Vector2D(0, 0);
-        this.turningLeft = false;
-        this.turningRight = false;
         this.thrusting = false;
         this.photonTorpedos = [];
         this.img = document.createElement("img");
@@ -19,21 +17,25 @@ export class Player extends Particle {
     }
 
     update() {
-        if (this.game.keys.includes("ArrowLeft") || this.game.keys.includes("a")) {
+        if (this.game.engine.input.wasPressedOnce("Space") || this.game.engine.input.wasPressedOnce(" ")) {
+            this.shoot();
+        }
+        if (this.game.engine.input.isPressed("ArrowLeft") || this.game.engine.input.isPressed("a")) {
             this.angle -= 0.03;
-        } else if (this.game.keys.includes("ArrowRight") || this.game.keys.includes("d")) {
+        }
+        if (this.game.engine.input.isPressed("ArrowRight") || this.game.engine.input.isPressed("d")) {
             this.angle += 0.03;
-        } else if (this.game.keys.includes("ArrowUp") || this.game.keys.includes("w")) {
+        }
+        if (this.game.engine.input.isPressed("ArrowUp" || this.game.engine.input.isPressed("w"))) {
             this.thrusting = true;
         } else {
             this.thrusting = false;
         }
 
         this.thrust.setAngle(this.angle);
-         if(this.thrusting) {
+        if (this.thrusting) {
             this.thrust.setLength(0.05);
-        }
-        else {
+        } else {
             this.thrust.setLength(0);
         }
 
@@ -48,23 +50,19 @@ export class Player extends Particle {
     }
 
     draw(context) {
-        if (this.game.debug) {
-            context.strokeRect(this.x, this.y, this.width, this.height);
-        }   
-
         context.save();
         context.translate(this.position.x, this.position.y);
         context.rotate(this.angle);
         context.drawImage(this.img, 0, 0, this.img.width, this.img.height, -this.width / 2, -this.height / 2, this.width, this.height);
 
-        if(this.thrusting) {
+        if (this.thrusting) {
             context.beginPath();
             context.fillStyle = "red";
             context.strokeStyle = "red";
             context.moveTo(-25, 5);
-            context.lineTo(-10,5);
+            context.lineTo(-10, 5);
             context.moveTo(-25, -5);
-            context.lineTo(-10,-5);
+            context.lineTo(-10, -5);
             context.stroke();
         }
 
@@ -75,7 +73,7 @@ export class Player extends Particle {
         });
     }
 
-    shootTop() {
+    shoot() {
         if (this.game.ammo > 0) {
             //const pt = new Projectile(this.game, this.x + this.width, this.y + this.height / 2);
             const pt = new Projectile(this.game, this.position.x, this.position.y, this.angle);

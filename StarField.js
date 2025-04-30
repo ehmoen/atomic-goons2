@@ -14,10 +14,11 @@ export class StarField {
     }
 
     createStars() {
+        console.log("createStars");
         for (let i = 0; i < this.numStars; i++) {
             const star = {
-                x: -this.game.width / 2 + rand(this.game.width - 1),
-                y: -this.game.height / 2 + rand(this.game.height - 1),
+                x: -this.game.engine.width / 2 + rand(this.game.engine.width - 1),
+                y: -this.game.engine.height / 2 + rand(this.game.engine.height - 1),
                 z: NEAR_Z + rand(FAR_Z - NEAR_Z - 1),
                 color: "white"
             }
@@ -39,10 +40,10 @@ export class StarField {
         for (let i = 0; i < this.numStars; i++) {
             const xPerspective = FOCAL_LENGHT * this.stars[i].x / this.stars[i].z;
             const yPerspective = FOCAL_LENGHT * this.stars[i].y / this.stars[i].z;
-            const xScreen = this.game.width / 2 + xPerspective;
-            const yScreen = this.game.height / 2 - yPerspective;
+            const xScreen = this.game.engine.width / 2 + xPerspective;
+            const yScreen = this.game.engine.height / 2 - yPerspective;
 
-            if (!(xScreen >= this.game.width || xScreen < 0 || yScreen >= this.game.height || yScreen < 0)) {
+            if (!(xScreen >= this.game.engine.width || xScreen < 0 || yScreen >= this.game.engine.height || yScreen < 0)) {
                 const intensity = (255 - 255 * (this.stars[i].z / (4 * FAR_Z)));
                 const starScale = 1 - (this.stars[i].z / (FAR_Z - NEAR_Z));
                 context.beginPath();

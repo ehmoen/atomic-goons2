@@ -12,8 +12,10 @@ export class AtomicGoon {
         // this.y = -this.game.height / 2 + rand(this.game.height - 1);
         // this.z = NEAR_Z + rand(FAR_Z - NEAR_Z - 1);
 
-        this.x = randomRange(-this.game.width / 2, this.game.width / 2);
-        this.y = randomRange(-this.game.height / 2, this.game.height / 2);
+        this.isGoon = false;
+        
+        this.x = randomRange(-this.game.engine.width / 2, this.game.engine.width / 2);
+        this.y = randomRange(-this.game.engine.height / 2, this.game.engine.height / 2);
         this.z = randomRange(NEAR_Z, FAR_Z); 
         
         this.markedForDeletion = false;
@@ -51,7 +53,10 @@ export class AtomicGoon {
             }
         }
 
-        if (this.xScreen + this.width < 0) {
+        if (this.xScreen + this.width < 0 || 
+            this.xScreen > this.game.engine.width || 
+            this.yScreen + this.height < 0 || 
+            this.yScreen > this.game.engine.height) {
             this.markedForDeletion = true;
         }
 
@@ -71,15 +76,15 @@ export class AtomicGoon {
     draw(context) {
         const xPerspective = FOCAL_LENGHT * this.x / this.z;
         const yPerspective = FOCAL_LENGHT * this.y / this.z;
-        this.xScreen = this.game.width / 2 + xPerspective;
-        this.yScreen = this.game.height / 2 + yPerspective;
+        this.xScreen = this.game.engine.width / 2 + xPerspective;
+        this.yScreen = this.game.engine.height / 2 + yPerspective;
         const scale = 50 - (50 * this.z / (2000 - 50));
 
-        // if (this.game.debug) {
+        // if (this.game.engine.debug) {
         //     context.strokeRect(this.xScreen, this.yScreen,  this.width / scale, this.height / scale);
         // }
 
-        if (!this.isExploding && !(this.xScreen >= this.game.width || this.xScreen < 0 || this.yScreen >= this.game.height || this.yScreen < 0)) {
+        if (!this.isExploding && !(this.xScreen >= this.game.engine.width || this.xScreen < 0 || this.yScreen >= this.game.engine.height || this.yScreen < 0)) {
 
             context.drawImage(this.img, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.xScreen, this.yScreen, scale, scale);
         }
