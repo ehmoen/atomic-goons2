@@ -3,24 +3,23 @@ import Scene from "../engine/Scene.js";
 import UIText from "../UIText.js";
 import {StarField} from "../StarField.js";
 import {Player} from "../Player.js";
-import {AtomicGoon} from "../AtomicGoon.js";
-
+import Atoms from "../Atoms.js";
+import UIHealthBar from "../engine/UIHealthBar.js";
 export default class Level1Scene extends Scene {
     constructor(sceneManager) {
         super(sceneManager);
         this.score = 0;
 
         this.background = new StarField(this);
-        this.player = new Player(this);
+        this.player = new Player(sceneManager.engine, 100, 100);
+        this.playerHealth = 80;
+        this.playerMaxHealth = 100;
 
         this.enemies = [];
         this.enemyTimer = 0;
         this.enemyInterval = 0.3;
 
-        this.ammo = 50;
-        this.maxAmmo = 100;
-        this.ammoTimer = 0;
-        this.ammoInterval = 0.2;
+
 
         this.score = 0;
         this.winningScore = 10;
@@ -33,6 +32,20 @@ export default class Level1Scene extends Scene {
         this.ammoMeter = new UIText(20, 80, "Ammo: " + this.ammo);
         this.sceneManager.engine.ui.addElement(this.scoreText);
         this.sceneManager.engine.audio.playMusic("goonsInAction", true);
+
+        const healthBar = new UIHealthBar(
+            20, 200,              // x, y
+            200, 20,             // width, height
+            () => this.playerHealth,   // function that returns current health
+            () => this.playerMaxHealth, // function that returns max health
+            {
+                backgroundColor: "darkred",
+                fillColor: "green",
+                borderColor: "black"
+            }
+        );
+
+        this.sceneManager.engine.ui.addElement(healthBar);
     }
 
     update(deltaTime) {
@@ -55,21 +68,15 @@ export default class Level1Scene extends Scene {
         }
 
         this.background.update();
-        this.player.update();
+        this.player.update(deltaTime, this.sceneManager.engine.input);
 
-        if (this.ammoTimer > this.ammoInterval) {
-            if (this.ammo < this.maxAmmo) {
-                this.ammo++;
-                this.ammoTimer = 0;
-            }
-        } else {
-            this.ammoTimer += deltaTime;
-        }
+
 
         this.enemies.forEach((enemy) => {
             enemy.update();
             this.player.photonTorpedos.forEach((pt) => {
-                if (enemy.z < 1000 && this.checkPhotonTorpedoCollision(pt, enemy)) {
+                // if (enemy.z < 1000 && this.checkPhotonTorpedoCollision(pt, enemy)) {
+                if (enemy.z < 1000 && pt.body.isCollidingWith(enemy)) {
                     this.engine.audio.playSound("explosion");
                     enemy.isExploding = true;
                     pt.markedForDeletion = true;
@@ -83,6 +90,12 @@ export default class Level1Scene extends Scene {
             this.enemyTimer = 0;
         } else {
             this.enemyTimer += deltaTime;
+        }
+
+        // Test health decrease (for demo)
+        this.playerHealth -= deltaTime * 10;
+        if (this.playerHealth < 0) {
+            this.playerHealth = this.playerMaxHealth;
         }
     }
 
@@ -98,21 +111,15 @@ export default class Level1Scene extends Scene {
         });
         
         this.player.draw(ctx);
-
-        // ammo
-        for (let i = 0; i < this.ammo; i++) {
-            ctx.fillStyle = "red";
-            ctx.fillRect(20 + 5 * i, 50, 3, 20);
-        }
     }
 
     addEnemy() {
-        this.enemies.push(new AtomicGoon(this));
+        this.enemies.push(new Atoms(this));
     }
 
     checkPhotonTorpedoCollision(photonTorpedo, atomicGoon) {
-        const xPT = photonTorpedo.position.x + Math.cos(photonTorpedo.angle);
-        const yPT = photonTorpedo.position.y + Math.sin(photonTorpedo.angle);
+        const xPT = photonTorpedo.body.position.x + Math.cos(photonTorpedo.angle);
+        const yPT = photonTorpedo.body.position.y + Math.sin(photonTorpedo.angle);
         const xGoon = atomicGoon.xScreen;
         const yGoon = atomicGoon.yScreen;
 

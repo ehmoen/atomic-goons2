@@ -209,7 +209,7 @@ body {
 
 /* Set the scrolling animation and position it */
 .game-start-content {
-    animation: scroll 100s linear 1s;
+    animation: scroll 100s running linear infinite;
     position: absolute;
     top: 100%;
 }
