@@ -24,14 +24,14 @@ export class Player {
     }
 
     update(deltaTime, input) {
-        if (input.wasPressedOnce("Space") || input.wasPressedOnce(" ")) {
+        if (input.isPressed("Space") || input.wasPressedOnce(" ")) {
             this.shoot();
         }
         if (input.isPressed("ArrowLeft") || input.isPressed("a")) {
-            this.angle -= 0.03;
+            this.angle -= 0.04;
         }
         if (input.isPressed("ArrowRight") || input.isPressed("d")) {
-            this.angle += 0.03;
+            this.angle += 0.04;
         }
         if (input.isPressed("ArrowUp" || input.isPressed("w"))) {
             this.thrusting = true;

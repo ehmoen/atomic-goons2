@@ -20,24 +20,24 @@ export default class Atoms {
         this.body.position.y = 0;
         
         this.markedForDeletion = false;
-        this.lives = 1;
-        this.score = this.lives;
-        this.frameX = 0;
-        this.frameY = 0;
-        this.maxFrame = 19;
-        this.width = 70;
-        this.height = 70;
-        this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/goon.png";
-
-        this.isExploding = false;
-        this.frameExplodeX = 0;
-        this.frameExplodeY = 0;
-        this.maxFrameExplode = 70;
-        this.widthExp = 100;
-        this.heightExp = 100;
-        this.imgExplode = document.createElement("img");
-        this.imgExplode.src = "./assets/sprites/evil-goon.png";
+        // this.lives = 1;
+        // this.score = this.lives;
+        // this.frameX = 0;
+        // this.frameY = 0;
+        // this.maxFrame = 19;
+        // this.width = 70;
+        // this.height = 70;
+        // this.img = document.createElement("img");
+        // this.img.src = "./assets/sprites/goon.png";
+        //
+        // this.isExploding = false;
+        // this.frameExplodeX = 0;
+        // this.frameExplodeY = 0;
+        // this.maxFrameExplode = 70;
+        // this.widthExp = 100;
+        // this.heightExp = 100;
+        // this.imgExplode = document.createElement("img");
+        // this.imgExplode.src = "./assets/sprites/evil-goon.png";
 
         this.body.position.x = 0;
         this.body.position.y = 0;

@@ -5,6 +5,8 @@ import {StarField} from "../StarField.js";
 import {Player} from "../Player.js";
 import Atoms from "../Atoms.js";
 import UIHealthBar from "../engine/UIHealthBar.js";
+import GoodAtom from "../GoodAtom.js";
+import Goons from "../Goons.js";
 export default class Level1Scene extends Scene {
     constructor(sceneManager) {
         super(sceneManager);
@@ -114,20 +116,21 @@ export default class Level1Scene extends Scene {
     }
 
     addEnemy() {
-        this.enemies.push(new Atoms(this));
+        this.enemies.push(new GoodAtom(this));
+        this.enemies.push(new Goons(this));
     }
 
-    checkPhotonTorpedoCollision(photonTorpedo, atomicGoon) {
-        const xPT = photonTorpedo.body.position.x + Math.cos(photonTorpedo.angle);
-        const yPT = photonTorpedo.body.position.y + Math.sin(photonTorpedo.angle);
-        const xGoon = atomicGoon.xScreen;
-        const yGoon = atomicGoon.yScreen;
-
-        return xPT < xGoon + atomicGoon.width / 2 &&
-            yPT < yGoon + atomicGoon.height / 2 &&
-            xPT + photonTorpedo.width / 2 > xGoon &&
-            yPT + photonTorpedo.height / 2 > yGoon;
-    }
+    // checkPhotonTorpedoCollision(photonTorpedo, atomicGoon) {
+    //     const xPT = photonTorpedo.body.position.x + Math.cos(photonTorpedo.angle);
+    //     const yPT = photonTorpedo.body.position.y + Math.sin(photonTorpedo.angle);
+    //     const xGoon = atomicGoon.xScreen;
+    //     const yGoon = atomicGoon.yScreen;
+    //
+    //     return xPT < xGoon + atomicGoon.width / 2 &&
+    //         yPT < yGoon + atomicGoon.height / 2 &&
+    //         xPT + photonTorpedo.width / 2 > xGoon &&
+    //         yPT + photonTorpedo.height / 2 > yGoon;
+    // }
     
     onExit() {
         this.sceneManager.engine.ui.clear(); // clean up UI

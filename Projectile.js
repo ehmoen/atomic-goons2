@@ -14,7 +14,7 @@ export class Projectile {
         this.angle = angle;
         // this.width = 6;
         // this.height = 6;
-        this.speed = 10;
+        this.speed = 20;
         this.markedForDeletion = false;
     }
 
