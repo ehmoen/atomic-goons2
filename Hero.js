@@ -20,7 +20,7 @@ export class Hero {
         this.thrusting = false;
         this.photonTorpedos = [];
         this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/ship.png";
+        this.img.src = "./assets/sprites/ship2.png";
     }
 
     update(deltaTime, input) {
