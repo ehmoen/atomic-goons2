@@ -11,7 +11,7 @@ export class Projectile {
 
         // this.x = x;
         // this.y = y;
-        // this.angle = angle;
+        this.angle = angle;
         // this.width = 6;
         // this.height = 6;
         this.speed = 20;
@@ -19,8 +19,8 @@ export class Projectile {
     }
 
     update() {
-        //this.body.position.x += this.speed;
-        this.body.position.y -= this.speed;
+        this.body.position.x += Math.cos(this.angle) * this.speed;
+        this.body.position.y += Math.sin(this.angle) * this.speed;
 
         if (this.body.position.x > this.game.width || 
             this.body.position.x < 0 || 
@@ -32,6 +32,6 @@ export class Projectile {
 
     draw(context) {
         context.fillStyle = "#f2b934";
-        context.fillRect(this.body.position.x, this.body.position.y, this.body.width, this.body.height);
+        context.fillRect(this.body.position.x + Math.cos(this.angle), this.body.position.y + Math.sin(this.angle), this.body.width, this.body.height);
     }
 }

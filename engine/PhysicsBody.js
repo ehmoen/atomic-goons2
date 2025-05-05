@@ -1,12 +1,13 @@
 ﻿import { Vector2D } from './Vector2D.js';
 export default class PhysicsBody {
-    constructor(x, y, width, height, speed, direction, options = {}) {
+    constructor(x, y, width, height, options = {}) {
         this.position = new Vector2D(x, y);
         this.velocity = new Vector2D(0, 0);
-        this.velocity.setLength(speed); // magnitude
-        this.velocity.setAngle(direction); // angle
-        
         this.acceleration = new Vector2D(0, 0);
+        
+        // this.velocity.setLength(speed); // magnitude
+        // this.velocity.setAngle(direction); // angle
+        
 
         this.width = width;
         this.height = height;
@@ -29,22 +30,22 @@ export default class PhysicsBody {
         if (this.isStatic) return;
 
         // Apply gravity
-        //this.velocity.y += this.gravity * deltaTime;
+        this.velocity.y += this.gravity * deltaTime;
 
         // Apply acceleration
-        // this.velocity.x += this.acceleration.x * deltaTime;
-        // this.velocity.y += this.acceleration.y * deltaTime;
+        this.velocity.x += this.acceleration.x * deltaTime;
+        this.velocity.y += this.acceleration.y * deltaTime;
 
-        this.velocity.multiplyBy(this.friction);
-        this.velocity.addTo(this.acceleration);
-        this.position.addTo(this.velocity);
+        // this.velocity.multiplyBy(this.friction);
+        // this.velocity.addTo(this.acceleration);
+        // this.position.addTo(this.velocity);
         
         // Apply friction (to horizontal movement)
-        //this.velocity.x *= this.friction;
+        this.velocity.x *= this.friction;
 
         // Clamp max speed
-        //this.velocity.x = Math.max(-this.maxSpeed, Math.min(this.velocity.x, this.maxSpeed));
-        //this.velocity.y = Math.max(-this.maxSpeed, Math.min(this.velocity.y, this.maxSpeed));
+        this.velocity.x = Math.max(-this.maxSpeed, Math.min(this.velocity.x, this.maxSpeed));
+        this.velocity.y = Math.max(-this.maxSpeed, Math.min(this.velocity.y, this.maxSpeed));
 
         // Update position
         this.position.x += this.velocity.x * deltaTime;

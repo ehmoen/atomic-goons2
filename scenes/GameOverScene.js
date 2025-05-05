@@ -23,19 +23,25 @@ export default class GameOverScene extends Scene {
     }
 
     draw(ctx) {
-        const backgroundImage = new Image();
-        backgroundImage.src = "./assets/sprites/atomic-hero.png";
+        const backgroundImage1 = new Image();
+        backgroundImage1.src = "./assets/sprites/vh.jpg";
         
-        ctx.fillStyle = "red";
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        const backgroundImage2 = new Image();
+        backgroundImage2.src = "./assets/sprites/atomic-hero.png";
+        
+        // ctx.fillStyle = "red";
+        // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        ctx.drawImage(backgroundImage, 
-            ctx.canvas.width / 2 - backgroundImage.width, 
-            ctx.canvas.height / 2 - backgroundImage.height / 2 , 
-            ctx.canvas.width / 2, 
+        ctx.drawImage(backgroundImage1,0,0,
+            ctx.canvas.width, 
+            ctx.canvas.height);
+        ctx.drawImage(backgroundImage2,
+            ctx.canvas.width / 2 - backgroundImage2.width,
+            ctx.canvas.height / 2 - backgroundImage2.height / 2 ,
+            ctx.canvas.width / 2,
             ctx.canvas.height / 2);
         
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.font = "250% 'Press Start 2P'";
         ctx.textAlign = "center";
         ctx.fillText("Game Over", ctx.canvas.width / 2, ctx.canvas.height / 10);

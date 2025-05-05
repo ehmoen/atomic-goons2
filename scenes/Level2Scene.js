@@ -2,27 +2,24 @@
 import Scene from "../engine/Scene.js";
 import UIText from "../UIText.js";
 import {StarField} from "../StarField.js";
-// import {Player} from "../Player.js";
-// import Atoms from "../Atoms.js";
+import {Player} from "../Player.js";
+import Atoms from "../Atoms.js";
 import UIHealthBar from "../engine/UIHealthBar.js";
 import GoodAtom from "../GoodAtom.js";
 import Goons from "../Goons.js";
-import {Hero} from "../Hero.js";
-import BadAtom from "../BadAtom.js";
-import Meteor from "../Meteor.js";
-export default class Level1Scene extends Scene {
+export default class Level2Scene extends Scene {
     constructor(sceneManager) {
         super(sceneManager);
         this.score = 0;
 
         this.background = new StarField(this);
-        this.player = new Hero(sceneManager.engine, sceneManager.engine.canvas.width / 2, sceneManager.engine.canvas.height - 50);
-        this.playerHealth = 10;
-        this.playerMaxHealth = 10;
+        this.player = new Player(sceneManager.engine, this.sceneManager.engine.width / 2, 10);
+        this.playerHealth = 80;
+        this.playerMaxHealth = 100;
 
         this.enemies = [];
         this.enemyTimer = 0;
-        this.enemyInterval = 0.9;
+        this.enemyInterval = 0.3;
 
 
 
@@ -39,12 +36,12 @@ export default class Level1Scene extends Scene {
         this.sceneManager.engine.audio.playMusic("goonsInAction", true);
 
         const healthBar = new UIHealthBar(
-            this.sceneManager.engine.canvas.width - 250, 20,              // x, y
+            20, 200,              // x, y
             200, 20,             // width, height
             () => this.playerHealth,   // function that returns current health
             () => this.playerMaxHealth, // function that returns max health
             {
-                backgroundColor: "red",
+                backgroundColor: "darkred",
                 fillColor: "green",
                 borderColor: "black"
             }
@@ -78,26 +75,16 @@ export default class Level1Scene extends Scene {
 
 
         this.enemies.forEach((enemy) => {
-            enemy.update(deltaTime);
+            enemy.update();
             this.player.photonTorpedos.forEach((pt) => {
                 // if (enemy.z < 1000 && this.checkPhotonTorpedoCollision(pt, enemy)) {
-                if (pt.body.isCollidingWith(enemy)) {
+                if (enemy.z < 1000 && pt.body.isCollidingWith(enemy)) {
                     this.engine.audio.playSound("explosion");
                     enemy.isExploding = true;
                     pt.markedForDeletion = true;
                     this.score += enemy.score;
                 }
-            });
-            if (this.player.body.isCollidingWith(enemy)) {
-                this.engine.audio.playSound("explosion");
-                enemy.isExploding = true;
-                console.log(this.playerHealth)
-                this.playerHealth -= 3 * deltaTime;
-                if (this.playerHealth <= 0) {
-                    this.sceneManager.changeScene(new GameOverScene(this.sceneManager));
-                }
-                this.score -= enemy.score;
-            }
+            })
         });
 
         if (this.enemyTimer > this.enemyInterval) {
@@ -107,11 +94,11 @@ export default class Level1Scene extends Scene {
             this.enemyTimer += deltaTime;
         }
 
-        // // Test health decrease (for demo)
-        // this.playerHealth -= deltaTime * 10;
-        // if (this.playerHealth < 0) {
-        //     this.playerHealth = this.playerMaxHealth;
-        // }
+        // Test health decrease (for demo)
+        this.playerHealth -= deltaTime * 10;
+        if (this.playerHealth < 0) {
+            this.playerHealth = this.playerMaxHealth;
+        }
     }
 
     draw(ctx) {
@@ -130,8 +117,7 @@ export default class Level1Scene extends Scene {
 
     addEnemy() {
         this.enemies.push(new GoodAtom(this));
-        this.enemies.push(new BadAtom(this));
-        this.enemies.push(new Meteor(this));
+        this.enemies.push(new Goons(this));
     }
 
     // checkPhotonTorpedoCollision(photonTorpedo, atomicGoon) {

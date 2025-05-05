@@ -7,13 +7,13 @@ import Atoms from "./Atoms.js";
 // const FOCAL_LENGHT = 600;
 // const VELOCITY_Z = 4;
 
-export default class GoodAtom {
+export default class BadAtom {
     constructor(game) {
         this.game = game;
         this.body = new PhysicsBody(0, 0, 70, 70, {
-            gravity: 50,
+            gravity: 30,
             friction: 1,
-            maxSpeed: 200
+            maxSpeed: 300
         });
         // this.isGoon = false;
         //
@@ -29,11 +29,11 @@ export default class GoodAtom {
         this.score = this.lives;
         this.frameX = 0;
         this.frameY = 0;
-        this.maxFrame = 19;
+        this.maxFrame = 0;
         this.width = 70;
         this.height = 70;
         this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/goon.png";
+        this.img.src = "./assets/sprites/evilGoon.png";
 
         this.isExploding = false;
         this.frameExplodeX = 0;

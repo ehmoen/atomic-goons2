@@ -9,12 +9,12 @@ const VELOCITY_Z = 4;
 export default class Atoms {
     constructor(game) {
         this.game = game;
-        this.body = new PhysicsBody(0, 0, 70, 70, { 
-            gravity: 10,
-            friction: 1,
-            maxSpeed: 0
-        });
+        this.body = new PhysicsBody(0, 0, 70, 70, { });
         this.isGoon = false;
+       
+        this.drawX = randomRange(-this.game.engine.width / 2, this.game.engine.width / 2);
+        this.drawY = randomRange(-this.game.engine.height / 2, this.game.engine.height / 2);
+        this.z = randomRange(NEAR_Z, FAR_Z); 
         
         this.body.position.x = 0;
         this.body.position.y = 0;
@@ -53,12 +53,12 @@ export default class Atoms {
             }
         }
 
-        // if (this.body.position.x + this.width < 0 || 
-        //     this.body.position.x > this.game.engine.width || 
-        //     this.body.position.y + this.height < 0 || 
-        //     this.body.position.y > this.game.engine.height) {
-        //     this.markedForDeletion = true;
-        // }
+        if (this.body.position.x + this.width < 0 || 
+            this.body.position.x > this.game.engine.width || 
+            this.body.position.y + this.height < 0 || 
+            this.body.position.y > this.game.engine.height) {
+            this.markedForDeletion = true;
+        }
 
         // sprite animation
         if (this.frameX < this.maxFrame) {
@@ -66,11 +66,11 @@ export default class Atoms {
         } else {
             this.frameX = 0;
         }
-        //
-        // this.z -= VELOCITY_Z;
-        // if (this.z <= NEAR_Z) {
-        //     this.z = FAR_Z;
-        // }
+
+        this.z -= VELOCITY_Z;
+        if (this.z <= NEAR_Z) {
+            this.z = FAR_Z;
+        }
     }
 
     draw(context) {
