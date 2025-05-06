@@ -1,5 +1,5 @@
-﻿import {randomRange} from "./engine/utils.js";
-import PhysicsBody from "./engine/PhysicsBody.js";
+﻿import {randomRange} from "../engine/utils.js";
+import PhysicsBody from "../engine/PhysicsBody.js";
 
 const NEAR_Z = 5;
 const FAR_Z = 2000;

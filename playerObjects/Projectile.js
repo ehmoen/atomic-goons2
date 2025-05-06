@@ -1,25 +1,19 @@
-﻿import PhysicsBody from "./engine/PhysicsBody.js";
+﻿import PhysicsBody from "../engine/PhysicsBody.js";
 
 export class Projectile {
-    constructor(game, x, y, angle) {
+    constructor(game, x, y) {
         this.game = game;
-        this.body = new PhysicsBody(x, y, 6, 6, 0, 0, {
+        this.body = new PhysicsBody(x, y, 6, 6, {
             gravity: 0,
             friction: 1,
             maxSpeed: 0
         });
 
-        // this.x = x;
-        // this.y = y;
-        // this.angle = angle;
-        // this.width = 6;
-        // this.height = 6;
         this.speed = 20;
         this.markedForDeletion = false;
     }
 
     update() {
-        //this.body.position.x += this.speed;
         this.body.position.y -= this.speed;
 
         if (this.body.position.x > this.game.width || 

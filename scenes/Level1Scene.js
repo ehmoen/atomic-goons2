@@ -5,11 +5,11 @@ import {StarField} from "../StarField.js";
 // import {Player} from "../Player.js";
 // import Atoms from "../Atoms.js";
 import UIHealthBar from "../engine/UIHealthBar.js";
-import GoodAtom from "../GoodAtom.js";
-import Goons from "../Goons.js";
-import {Hero} from "../Hero.js";
-import BadAtom from "../BadAtom.js";
-import Meteor from "../Meteor.js";
+import GoodAtom from "../playerObjects/GoodAtom.js";
+import Goons from "../playerObjects/Goons.js";
+import {Hero} from "../playerObjects/Hero.js";
+import BadAtom from "../playerObjects/BadAtom.js";
+import Meteor from "../playerObjects/Meteor.js";
 export default class Level1Scene extends Scene {
     constructor(sceneManager) {
         super(sceneManager);

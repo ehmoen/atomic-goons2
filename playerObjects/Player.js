@@ -1,17 +1,17 @@
-﻿import {Vector2D} from "./engine/Vector2D.js";
+﻿import {Vector2D} from "../engine/Vector2D.js";
 import {Projectile} from "./Projectile.js";
-import PhysicsBody from "./engine/PhysicsBody.js";
-export class Hero {
+import PhysicsBody from "../engine/PhysicsBody.js";
+export class Player {
     constructor(game, x, y) {
         this.game = game;
-        this.body = new PhysicsBody(x, y, 64, 64, { 
+        this.body = new PhysicsBody(x, y, 32, 32, { 
             gravity: 0, 
-            friction: 0.9, 
-            maxSpeed: 10000
+            friction: 0.99, 
+            maxSpeed: 100 
         });
         
-        this.ammo = 1000;
-        this.maxAmmo = 1000;
+        this.ammo = 50;
+        this.maxAmmo = 100;
         this.ammoTimer = 0;
         this.ammoInterval = 0.2;
         
@@ -20,44 +20,33 @@ export class Hero {
         this.thrusting = false;
         this.photonTorpedos = [];
         this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/ship2.png";
+        this.img.src = "./assets/sprites/ship2png";
     }
 
     update(deltaTime, input) {
-        let speed = 300;
-        if (input.isPressed("Space") || input.isPressed(" ")) {
+        if (input.isPressed("Space") || input.wasPressedOnce(" ")) {
             this.shoot();
         }
-        if (input.isPressed("ArrowUp")) {
-            speed = speed * 3;
-        } else{
-            speed = 300;
-        }
         if (input.isPressed("ArrowLeft") || input.isPressed("a")) {
-            this.body.acceleration.x = -1;
-            this.body.velocity.x = -speed;
-            
-            //this.thrust.setLength(-1);
+            this.angle -= 0.04;
         }
         if (input.isPressed("ArrowRight") || input.isPressed("d")) {
-            this.body.acceleration.x = 1;
-            this.body.velocity.x = speed;
-            //this.thrust.setLength(1);
+            this.angle += 0.04;
         }
-        // if (input.isPressed("ArrowUp" || input.isPressed("w"))) {
-        //     this.thrusting = true;
-        // } else {
-        //     this.thrusting = false;
-        // }
-        //
-        // this.thrust.setAngle(this.angle);
-        // if (this.thrusting) {
-        //     this.thrust.setLength(0.05);
-        // } else {
-        //     this.thrust.setLength(0);
-        // }
-        //
-        //this.body.acceleration = this.thrust;
+        if (input.isPressed("ArrowUp" || input.isPressed("w"))) {
+            this.thrusting = true;
+        } else {
+            this.thrusting = false;
+        }
+
+        this.thrust.setAngle(this.angle);
+        if (this.thrusting) {
+            this.thrust.setLength(0.05);
+        } else {
+            this.thrust.setLength(0);
+        }
+
+        this.body.acceleration = this.thrust;
 
         // handle projectiles
         this.photonTorpedos.forEach((pt) => {
@@ -79,12 +68,10 @@ export class Hero {
     }
 
     draw(context) {
-        //  context.save();
-        // context.translate(this.body.position.x, this.body.position.y);
-        // context.rotate(Math.PI);
-        context.drawImage(this.img, this.body.position.x, this.body.position.y, this.img.width, this.img.height);//,  -this.body.width / 2, -this.body.height / 2, this.body.width, this.body.height);
-        //context.fillStyle = "red";
-        //context.fillRect(this.body.position.x, this.body.position.y, this.body.width, this.body.height);
+        context.save();
+        context.translate(this.body.position.x, this.body.position.y);
+        context.rotate(this.angle);
+        context.drawImage(this.img, 0, 0, this.img.width, this.img.height, -this.body.width / 2, -this.body.height / 2, this.body.width, this.body.height);
         
         if (this.thrusting) {
             context.beginPath();
@@ -97,7 +84,7 @@ export class Hero {
             context.stroke();
         }
 
-        //context.restore();
+        context.restore();
 
         this.photonTorpedos.forEach((pt) => {
             pt.draw(context);

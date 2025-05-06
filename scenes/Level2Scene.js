@@ -2,11 +2,11 @@
 import Scene from "../engine/Scene.js";
 import UIText from "../UIText.js";
 import {StarField} from "../StarField.js";
-import {Player} from "../Player.js";
-import Atoms from "../Atoms.js";
+import {Player} from "../playerObjects/Player.js";
+import Atoms from "../playerObjects/Atoms.js";
 import UIHealthBar from "../engine/UIHealthBar.js";
-import GoodAtom from "../GoodAtom.js";
-import Goons from "../Goons.js";
+import GoodAtom from "../playerObjects/GoodAtom.js";
+import Goons from "../playerObjects/Goons.js";
 export default class Level2Scene extends Scene {
     constructor(sceneManager) {
         super(sceneManager);

@@ -1,13 +1,7 @@
-﻿import {randomRange} from "./engine/utils.js";
-import PhysicsBody from "./engine/PhysicsBody.js";
-import Atoms from "./Atoms.js";
+﻿import {randomRange} from "../engine/utils.js";
+import PhysicsBody from "../engine/PhysicsBody.js";
 
-// const NEAR_Z = 5;
-// const FAR_Z = 2000;
-// const FOCAL_LENGHT = 600;
-// const VELOCITY_Z = 4;
-
-export default class GoodAtom {
+export default class Meteor {
     constructor(game) {
         this.game = game;
         this.body = new PhysicsBody(0, 0, 70, 70, {
@@ -15,25 +9,20 @@ export default class GoodAtom {
             friction: 1,
             maxSpeed: 200
         });
-        // this.isGoon = false;
-        //
-        // this.drawX = randomRange(-this.game.engine.width / 2, this.game.engine.width / 2);
-        // this.drawY = randomRange(-this.game.engine.height / 2, this.game.engine.height / 2);
-        // this.z = randomRange(NEAR_Z, FAR_Z); 
-        //
+
         this.body.position.x = randomRange(0, this.game.engine.width);
-        //this.body.position.y = -10;
+        this.body.position.y = -70;
         
         //this.markedForDeletion = false;
         this.lives = 1;
         this.score = this.lives;
         this.frameX = 0;
         this.frameY = 0;
-        this.maxFrame = 19;
+        this.maxFrame = 0;
         this.width = 70;
         this.height = 70;
         this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/goon.png";
+        this.img.src = "./assets/sprites/meteor.png";
 
         this.isExploding = false;
         this.frameExplodeX = 0;
