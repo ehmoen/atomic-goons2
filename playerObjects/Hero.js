@@ -9,6 +9,9 @@ export class Hero {
             friction: 0.9, 
             maxSpeed: 10000
         });
+
+        this.thrust = new Vector2D(0, 0);
+        this.thrusting = false;
         
         this.ammo = 1000;
         this.maxAmmo = 1000;
@@ -26,11 +29,11 @@ export class Hero {
             this.shoot();
         }
         
-        if (input.isPressed("ArrowUp")) {
-            speed = speed * 3;
-        } else{
-            speed = 300;
-        }
+        // if (input.isPressed("ArrowUp")) {
+        //     speed = speed * 3;
+        // } else{
+        //     speed = 300;
+        // }
         
         if (input.isPressed("ArrowLeft") || input.isPressed("a")) {
             this.body.acceleration.x = -1;
@@ -42,6 +45,40 @@ export class Hero {
             this.body.velocity.x = speed;
         }
 
+        if (input.isPressed("ArrowUp" || input.isPressed("w"))) {
+            //if(this.body.position.y < this.game.height - 100) {
+                this.body.acceleration.y -= 1 * deltaTime;
+                this.body.velocity.y = -100;
+            //}
+        }  
+        if (input.isPressed("ArrowDown" || input.isPressed("s"))) {
+            //if(this.body.position.y < 70) {
+                this.body.acceleration.y += 1 * deltaTime;
+                this.body.velocity.y = 100;
+            //}
+        }
+        //
+        // if (input.isPressed("ArrowDown" || input.isPressed("s"))) {
+        //     this.thrusting = true;
+        // } else {
+        //     this.thrusting = false;
+        // }
+        //
+        // if (this.thrusting) {
+        //     console.log(this.game.height)
+        //     if(this.body.position.y < this.game.height - 100) {
+        //         this.body.acceleration.y -= 10 * deltaTime;
+        //         this.body.velocity.y = -speed;
+        //     }
+        // } else {
+        //     if(this.body.position.y < 70) {
+        //         this.body.acceleration.y += 10 * deltaTime;
+        //         this.body.velocity.y = speed;
+        //     }
+        //     //this.thrust.setLength(0);
+        // }
+
+        
         // handle projectiles
         this.photonTorpedos.forEach((pt) => {
             pt.update();

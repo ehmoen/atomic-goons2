@@ -36,12 +36,13 @@ export default class PhysicsBody {
         this.velocity.x += this.acceleration.x * deltaTime;
         this.velocity.y += this.acceleration.y * deltaTime;
 
-        // this.velocity.multiplyBy(this.friction);
         // this.velocity.addTo(this.acceleration);
         // this.position.addTo(this.velocity);
         
         // Apply friction (to horizontal movement)
         this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+        //this.velocity.multiplyBy(this.friction);
 
         // Clamp max speed
         this.velocity.x = Math.max(-this.maxSpeed, Math.min(this.velocity.x, this.maxSpeed));

@@ -7,7 +7,7 @@ export class Player {
         this.body = new PhysicsBody(x, y, 32, 32, { 
             gravity: 0, 
             friction: 0.99, 
-            maxSpeed: 100 
+            maxSpeed: 300
         });
         
         this.ammo = 50;
@@ -20,7 +20,7 @@ export class Player {
         this.thrusting = false;
         this.photonTorpedos = [];
         this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/ship2png";
+        this.img.src = "./assets/sprites/ship.png";
     }
 
     update(deltaTime, input) {
@@ -41,7 +41,7 @@ export class Player {
 
         this.thrust.setAngle(this.angle);
         if (this.thrusting) {
-            this.thrust.setLength(0.05);
+            this.thrust.setLength(300);
         } else {
             this.thrust.setLength(0);
         }

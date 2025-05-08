@@ -10,13 +10,14 @@ import Goons from "../playerObjects/Goons.js";
 import {Hero} from "../playerObjects/Hero.js";
 import BadAtom from "../playerObjects/BadAtom.js";
 import Meteor from "../playerObjects/Meteor.js";
+import {Player} from "../playerObjects/Player.js";
 export default class Level1Scene extends Scene {
     constructor(sceneManager) {
         super(sceneManager);
         this.score = 0;
 
         this.background = new StarField(this);
-        this.player = new Hero(sceneManager.engine, sceneManager.engine.canvas.width / 2, sceneManager.engine.canvas.height - 50);
+        this.player = new Player(sceneManager.engine, sceneManager.engine.canvas.width / 2, sceneManager.engine.canvas.height - 50);
         this.playerHealth = 10;
         this.playerMaxHealth = 10;
 

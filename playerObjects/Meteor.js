@@ -1,5 +1,6 @@
 ﻿import {randomRange} from "../engine/utils.js";
 import PhysicsBody from "../engine/PhysicsBody.js";
+import Animator from "../engine/Animator.js";
 
 export default class Meteor {
     constructor(game) {
@@ -7,9 +8,11 @@ export default class Meteor {
         this.body = new PhysicsBody(0, 0, 70, 70, {
             gravity: 50,
             friction: 1,
-            maxSpeed: 200
+            maxSpeed: 100
         });
 
+        
+        
         this.body.position.x = randomRange(0, this.game.engine.width);
         this.body.position.y = -70;
         
@@ -18,11 +21,13 @@ export default class Meteor {
         this.score = this.lives;
         this.frameX = 0;
         this.frameY = 0;
-        this.maxFrame = 0;
-        this.width = 70;
-        this.height = 70;
+        this.maxFrame = 7;
+        this.animator = new Animator(this.maxFrame, 5);
+        
+        this.width = 50;
+        this.height = 50;
         this.img = document.createElement("img");
-        this.img.src = "./assets/sprites/meteor.png";
+        this.img.src = "./assets/sprites/meteors.png";
 
         this.isExploding = false;
         this.frameExplodeX = 0;
@@ -60,17 +65,10 @@ export default class Meteor {
             this.markedForDeletion = true;
         }
 
-        // sprite animation
-        if (this.frameX < this.maxFrame) {
-            this.frameX++;
-        } else {
-            this.frameX = 0;
-        }
-        //
-        // this.z -= VELOCITY_Z;
-        // if (this.z <= NEAR_Z) {
-        //     this.z = FAR_Z;
-        // }
+        // sprite animation with deltatime?
+        this.animator.update(deltaTime);
+        this.frameX = this.animator.getCurrentFrame();
+
         this.body.update(deltaTime);
     }
 
